@@ -1,0 +1,15 @@
+# HFGAD 依赖列表 / HFGAD dependency list
+# 说明：以下 torch / torchvision 默认为 CPU 版本，便于直接运行 demo 与 ONNX 推理。
+# 如需 GPU 训练，请注释掉下面两行，并按 https://pytorch.org/ 安装对应 CUDA 版本，例如：
+#   pip install torch==1.13.1+cu117 torchvision==0.14.1+cu117 --extra-index-url https://download.pytorch.org/whl/cu117
+
+torch==1.13.1
+torchvision==0.14.1
+numpy==1.26.2
+opencv-python==4.7.0.72
+matplotlib==3.5.2
+PyYAML==6.0
+easydict==1.13
+gradual-warmup-scheduler==0.3
+onnx==1.19.1
+onnxruntime==1.19.2

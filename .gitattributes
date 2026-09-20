@@ -1,0 +1,11 @@
+# Normalize line endings across platforms
+* text=auto eol=lf
+
+# Binary files that must never be modified
+*.pt   binary
+*.pth  binary
+*.onnx binary
+*.zip  binary
+*.png  binary
+*.jpg  binary
+*.pdf  binary

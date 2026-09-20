@@ -1,0 +1,47 @@
+---
+train:
+
+    params:
+        batch_size: 64
+        epoch: 80
+        lr: 0.0005
+        warmup: 5
+    
+    cosine:
+        enable: False
+        T_max: 80
+        eta_min: 0
+
+    stepLR:
+        decay: 0.5
+        decay_step: 15
+
+    save:
+        # 输出目录，相对于项目根
+        metapath: "./evaluation"
+        folder: gaze360
+        model_name: gazetr
+        step: 10
+
+    data:
+        # 修改为本地数据集路径，目录结构参考 README "数据集准备" 一节
+        image: "./datasets/Gaze360/Image"
+        label: "./datasets/Gaze360/Label/train.label"
+        header: True
+        name: gaze360
+        isFolder: False
+        
+    pretrain:
+        # 可选：用 GazeTR-H-ETH 权重初始化。strict=False，键不匹配时会被忽略。
+        # 不需要预训练就设 enable: False。
+        # Optional: initialize from GazeTR-H-ETH weights (loaded with strict=False).
+        enable: False
+        path: "./ckpts/GazeTR-H-ETH.pt"
+        device: 0
+
+    device: 0
+
+    reader: reader
+
+# dropout = 0
+# dim_feed = 512

@@ -1,0 +1,66 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below, and please also cite the accompanying paper."
+title: "HFGAD: Hierarchical Fine-Grained Attention Decoder for Gaze Estimation"
+abstract: >-
+  Official PyTorch implementation of HFGAD, a lightweight hierarchical
+  fine-grained attention decoder for appearance-based gaze estimation.
+  HFGAD combines a Multi-Scale Channel-Spatial Attention (MSCSA) module and
+  a Selective Fusion Module (SFM) to exploit shallow-layer, fine-grained cues
+  that are usually discarded by deep encoder features.
+authors:
+  - given-names: Shaojie
+    family-names: Huang
+    affiliation: "School of Computer Engineering, Jimei University"
+  - given-names: Tianzhong
+    family-names: Wang
+    affiliation: "School of Computer Engineering, Jimei University"
+  - given-names: Weiquan
+    family-names: Liu
+    affiliation: "School of Computer Engineering, Jimei University"
+  - given-names: Yingchao
+    family-names: Piao
+    affiliation: "Computer Network Information Center, Chinese Academy of Sciences"
+  - given-names: Jinhe
+    family-names: Su
+    affiliation: "School of Computer Engineering, Jimei University"
+  - given-names: Guorong
+    family-names: Cai
+    affiliation: "School of Computer Engineering, Jimei University"
+  - given-names: Huilin
+    family-names: Xu
+    affiliation: "School of Computer Engineering, Jimei University"
+    email: xuhuilin@jmu.edu.cn
+version: 1.0.0
+date-released: "2025-08-24"
+license: MIT
+repository-code: "https://github.com/Shay2208/HFGAD"
+url: "https://doi.org/10.3390/a18090538"
+keywords:
+  - gaze estimation
+  - lightweight decoder
+  - deep learning
+  - fine-grained
+preferred-citation:
+  type: article
+  title: "HFGAD: Hierarchical Fine-Grained Attention Decoder for Gaze Estimation"
+  journal: Algorithms
+  year: 2025
+  volume: 18
+  issue: 9
+  start: 538
+  doi: 10.3390/a18090538
+  authors:
+    - given-names: Shaojie
+      family-names: Huang
+    - given-names: Tianzhong
+      family-names: Wang
+    - given-names: Weiquan
+      family-names: Liu
+    - given-names: Yingchao
+      family-names: Piao
+    - given-names: Jinhe
+      family-names: Su
+    - given-names: Guorong
+      family-names: Cai
+    - given-names: Huilin
+      family-names: Xu

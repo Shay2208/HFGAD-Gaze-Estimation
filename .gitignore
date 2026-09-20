@@ -1,0 +1,73 @@
+# ---------------------------------------------------------------------------
+# HFGAD: Hierarchical Fine-Grained Attention Decoder for Gaze Estimation
+# ---------------------------------------------------------------------------
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+*.egg
+build/
+dist/
+.eggs/
+.pytest_cache/
+.ipynb_checkpoints/
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# IDE / OS
+.vscode/
+.idea/
+*.swp
+.DS_Store
+Thumbs.db
+
+# Local WorkBuddy workspace notes (never publish)
+.workbuddy/
+
+# Datasets (never commit; see README "Datasets")
+datasets/
+data/
+*.zip
+*.tar.gz
+*.tgz
+*.7z
+*.rar
+
+# Model weights / checkpoints
+# They are distributed via GitHub Releases instead of git.
+# Run `python scripts/download_weights.py` to fetch them.
+ckpts/
+*.pth
+*.pt
+*.ckpt
+*.onnx
+*.safetensors
+*.pkl
+*.engine
+*.trt
+
+# Training / evaluation artifacts
+evaluation/**/checkpoint/
+evaluation/**/evaluation/
+runs/
+outputs/
+results/
+tensorboard/
+*.log
+*.tmp
+*.bak
+*.npy
+
+# Images are ignored by default, except the ones shipped under assets/
+*.png
+*.jpg
+*.jpeg
+*.gif
+!assets/**
+!docs/**

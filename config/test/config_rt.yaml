@@ -1,0 +1,24 @@
+---
+test:
+
+    load:
+        begin_step: 10
+        end_step: 80
+        steps: 10
+
+    data: 
+        # 修改为本地数据集路径，目录结构参考 README "数据集准备" 一节
+        image: "./datasets/RT-Gene/gaze_refine"
+        label: "./datasets/RT-Gene/Label/train" 
+        name: rt
+        header: True
+        isFolder: True
+
+    savename: "evaluation"
+
+    device: 0
+
+    reader: reader
+
+# dropout = 0
+# dim_feed = 512

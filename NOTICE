@@ -1,0 +1,62 @@
+HFGAD: Hierarchical Fine-Grained Attention Decoder for Gaze Estimation
+Copyright (c) 2025 the authors listed in CITATION.cff (Jimei University).
+
+This project is released under the MIT License (see LICENSE).
+It builds on, or bundles, third-party code and pretrained weights listed below.
+Each item remains under its own license.
+
+---------------------------------------------------------------------------
+1. Third-party source code
+---------------------------------------------------------------------------
+
+* models/emcad.py
+  MobileNetV2 backbone, adapted from
+  https://github.com/tonylins/pytorch-mobilenet-v2
+  (originally derived from TensorFlow Slim MobileNet).
+
+* models/PVT.py
+  PVT v2 (Pyramid Vision Transformer v2) backbone, adapted from the official
+  implementation: https://github.com/whai362/PVT
+  - Please double-check the upstream license before redistribution.
+
+* models/resnet.py
+  ResNet-18 backbone, adapted from torchvision
+  (BSD-3-Clause, https://github.com/pytorch/vision).
+
+---------------------------------------------------------------------------
+2. Third-party pretrained weights
+---------------------------------------------------------------------------
+
+* ckpts/resnet18-5c106cde.pth
+  torchvision ResNet-18 ImageNet-1k weights (BSD-3-Clause).
+
+* ckpts/pvt_v2_b0.pth / pvt_v2_b2.pth / pvt_v2_b2_li.pth
+  Official PVT v2 ImageNet-1k weights from https://github.com/whai362/PVT
+
+* ckpts/GazeTR-H-ETH.pt
+  GazeTR checkpoint pretrained on ETH-XGaze; used only as an optional
+  initialization for Gaze360 training (see config/train/*.yaml).
+  Source: the GazeTR project. Please confirm the upstream repo URL and
+  license, and either add it here or remove the file before release.
+
+---------------------------------------------------------------------------
+3. TODO before publishing
+---------------------------------------------------------------------------
+
+[ ] Confirm and fill in the exact upstream repository URLs + licenses for the
+    training framework this code was adapted from (the trainer/tester/reader
+    layout and the GazeTR-H-ETH.pt checkpoint suggest a GazeTR-derived base).
+    Add the attribution above, or remove any file you are not allowed to
+    redistribute.
+[ ] Verify that CITATION.cff, README.md and scripts/download_weights.py point at
+    the right repository (https://github.com/Shay2208/HFGAD).
+[ ] Verify that no dataset images or labels are committed (they are excluded
+    by .gitignore).
+
+---------------------------------------------------------------------------
+4. Datasets
+---------------------------------------------------------------------------
+
+Gaze360, MPIIFaceGaze, IVGaze and RT-Gene are distributed by their own
+owners under their own terms. This repository does NOT redistribute any
+dataset; see the "Datasets" section of README.md for the official links.
