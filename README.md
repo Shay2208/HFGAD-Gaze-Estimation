@@ -9,6 +9,7 @@
 Official PyTorch implementation of **HFGAD**, a lightweight hierarchical fine-grained
 attention decoder for appearance-based gaze estimation.
 
+<!-- Demo GIF — uncomment once assets/demo.gif is committed
 <p align="center">
   <img src="assets/demo.gif" width="720" alt="HFGAD real-time webcam gaze estimation demo">
 </p>
@@ -18,6 +19,7 @@ attention decoder for appearance-based gaze estimation.
   <sub>Recorded on a laptop webcam running <code>python webcam_gaze_demo.py</code>
   (see §5 Quick start to reproduce it).</sub>
 </p>
+-->
 
 > **论文开源仓库 / 中文说明**：本仓库为 *Algorithms* 2025 论文 *HFGAD: Hierarchical
 > Fine-Grained Attention Decoder for Gaze Estimation* 的官方代码。正文为英文，关键处附中文注释。
