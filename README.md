@@ -9,6 +9,16 @@
 Official PyTorch implementation of **HFGAD**, a lightweight hierarchical fine-grained
 attention decoder for appearance-based gaze estimation.
 
+<p align="center">
+  <img src="assets/demo.gif" width="720" alt="HFGAD real-time webcam gaze estimation demo">
+</p>
+<p align="center">
+  <em>Real-time webcam demo — HFGAD (ResNet-18 backbone, Gaze360 weights) predicts pitch/yaw
+  from a face crop, on CPU, with no dataset required.</em><br>
+  <sub>Recorded on a laptop webcam running <code>python webcam_gaze_demo.py</code>
+  (see §5 Quick start to reproduce it).</sub>
+</p>
+
 > **论文开源仓库 / 中文说明**：本仓库为 *Algorithms* 2025 论文 *HFGAD: Hierarchical
 > Fine-Grained Attention Decoder for Gaze Estimation* 的官方代码。正文为英文，关键处附中文注释。
 
@@ -98,8 +108,8 @@ Average angular error (°, **lower is better**). `HFGAD-Res18` = ResNet-18 encod
 ## 3. Installation
 
 ```bash
-git clone https://github.com/Shay2208/HFGAD.git
-cd HFGAD
+git clone https://github.com/Shay2208/HFGAD-Gaze-Estimation.git
+cd HFGAD-Gaze-Estimation
 
 # CPU-only (enough for the demo and ONNX inference)
 pip install -r requirements.txt
@@ -176,7 +186,7 @@ Press `q` (or `Esc`) to quit.
 Download them from the official sources and respect their licenses.
 
 ```
-HFGAD/
+HFGAD-Gaze-Estimation/
 └─ datasets/
    ├─ Gaze360/
    │  ├─ Image/          # images
@@ -254,7 +264,7 @@ python tools/compare_onnx_outputs.py            # compare ONNX vs PyTorch output
 ## 10. Repository structure
 
 ```
-HFGAD/
+HFGAD-Gaze-Estimation/
 ├─ config/                  Training / test configs (YAML)
 │  ├─ train/                config_gaze360 / mpii / rt / eth / diap
 │  └─ test/

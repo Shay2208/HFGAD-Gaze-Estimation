@@ -33,7 +33,7 @@ authors:
 version: 1.0.0
 date-released: "2025-08-24"
 license: MIT
-repository-code: "https://github.com/Shay2208/HFGAD"
+repository-code: "https://github.com/Shay2208/HFGAD-Gaze-Estimation"
 url: "https://doi.org/10.3390/a18090538"
 keywords:
   - gaze estimation

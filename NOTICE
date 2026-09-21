@@ -49,7 +49,7 @@ Each item remains under its own license.
     Add the attribution above, or remove any file you are not allowed to
     redistribute.
 [ ] Verify that CITATION.cff, README.md and scripts/download_weights.py point at
-    the right repository (https://github.com/Shay2208/HFGAD).
+    the right repository (https://github.com/Shay2208/HFGAD-Gaze-Estimation).
 [ ] Verify that no dataset images or labels are committed (they are excluded
     by .gitignore).
 

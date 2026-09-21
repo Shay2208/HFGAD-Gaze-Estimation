@@ -71,3 +71,9 @@ tensorboard/
 *.gif
 !assets/**
 !docs/**
+
+# Source video of the demo GIF: keep it out of git, the GIF is enough.
+# (Deliberately listed after the assets/ negation so it applies everywhere.)
+*.mp4
+*.mov
+*.webm
