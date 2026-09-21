@@ -13,3 +13,7 @@ easydict==1.13
 gradual-warmup-scheduler==0.3
 onnx==1.19.1
 onnxruntime==1.19.2
+
+# Optional: only needed to turn a recorded demo MP4 into a GIF
+# (scripts/video_to_gif.py). Ships a bundled FFmpeg binary on Windows.
+# imageio-ffmpeg==0.6.0

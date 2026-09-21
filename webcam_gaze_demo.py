@@ -131,6 +131,89 @@ class FaceBoxKalmanFilter:
         return int(round(x)), int(round(y)), int(round(w)), int(round(h))
 
 
+class DemoRecorder:
+    """Write the annotated demo frames to a video file.
+
+    A fixed output frame rate is used on purpose: the live loop runs at whatever
+    speed the CPU can deliver, and writing with that jittery rate would make the
+    recorded GIF/MP4 stutter. Re-encoding with a constant rate keeps playback
+    smooth. Pressing ``r`` toggles recording; every new segment after the first
+    gets a numeric suffix so nothing is overwritten.
+    """
+
+    FALLBACK_CODECS = ["mp4v", "avc1", "H264", "XVID", "MJPG"]
+
+    def __init__(self, output_path: Path, fps: float, preferred_codec: str = "mp4v"):
+        self.base_path = Path(output_path)
+        self.fps = float(fps)
+        self.codecs = [preferred_codec] + [
+            c for c in self.FALLBACK_CODECS if c.lower() != preferred_codec.lower()
+        ]
+        self.writer = None
+        self.size = None
+        self.segment = 0
+        self.active = False
+        self.frames_written = 0
+
+    @property
+    def current_path(self) -> Path:
+        if self.segment == 0:
+            return self.base_path
+        suffix = self.base_path.suffix
+        return self.base_path.with_name(f"{self.base_path.stem}_{self.segment}{suffix}")
+
+    def start(self):
+        if not self.active:
+            self.active = True
+            print(f"Recording armed -> {self.current_path}")
+
+    def _open(self, size):
+        path = self.current_path
+        path.parent.mkdir(parents=True, exist_ok=True)
+        for codec in self.codecs:
+            fourcc = cv2.VideoWriter_fourcc(*codec)
+            writer = cv2.VideoWriter(path.as_posix(), fourcc, self.fps, size)
+            if writer.isOpened():
+                self.size = size
+                print(f"Recording started: {path} ({size[0]}x{size[1]} @ {self.fps:g} fps, codec={codec})")
+                return writer
+            writer.release()
+        raise RuntimeError(
+            f"No usable video codec for {path}. Tried {self.codecs}. "
+            "Install an FFmpeg-backed OpenCV build or pass --record-codec avc1."
+        )
+
+    def write(self, frame: np.ndarray):
+        if not self.active:
+            return
+        size = (frame.shape[1], frame.shape[0])
+        if self.writer is None:
+            self.writer = self._open(size)
+        elif size != self.size:
+            print(f"Ignoring frame with unexpected size {size} (expected {self.size}).")
+            return
+        self.writer.write(frame)
+        self.frames_written += 1
+
+    def stop(self):
+        if self.writer is not None:
+            path = self.current_path
+            self.writer.release()
+            self.writer = None
+            print(f"Recording saved: {path} ({self.frames_written} frames)")
+        if self.active:
+            self.frames_written = 0
+            self.segment += 1
+            self.active = False
+
+    @property
+    def is_recording(self) -> bool:
+        return self.active and self.writer is not None
+
+    def release(self):
+        self.stop()
+
+
 def build_parser():
     parser = argparse.ArgumentParser(
         description="Real-time webcam gaze demo using the exported ONNX model."
@@ -209,6 +292,33 @@ def build_parser():
         type=float,
         default=5e-1,
         help="Face box Kalman measurement noise. Larger values produce a steadier box.",
+    )
+    parser.add_argument(
+        "--record-output",
+        type=Path,
+        default=None,
+        help=(
+            "Record the annotated frames to this video file, e.g. assets/demo.mp4. "
+            "Recording starts immediately; press r to pause/resume (resumed takes go into demo_1.mp4, demo_2.mp4, ...)."
+        ),
+    )
+    parser.add_argument(
+        "--record-fps",
+        type=float,
+        default=20.0,
+        help="Constant frame rate used for the recorded video. Keeps playback smooth even when live fps jitters.",
+    )
+    parser.add_argument(
+        "--record-codec",
+        type=str,
+        default="mp4v",
+        help="Preferred fourcc for the recording. mp4v is the safest; avc1/H264 give smaller files if available.",
+    )
+    parser.add_argument(
+        "--snapshot-dir",
+        type=Path,
+        default=None,
+        help="If set, press s during the demo to save the current annotated frame as a PNG in this folder.",
     )
     return parser
 
@@ -393,6 +503,10 @@ def main():
 
     cap = open_camera(args.camera_id, args.width, args.height)
 
+    recorder = DemoRecorder(args.record_output, args.record_fps, args.record_codec)
+    if args.record_output is not None:
+        recorder.start()
+
     fps = 0.0
     prev_time = time.perf_counter()
     profiler = PerfAverager()
@@ -510,9 +624,26 @@ def main():
                     1,
                     cv2.LINE_AA,
                 )
+            hint = "Press q or ESC to quit"
+            if args.record_output is not None:
+                hint += " | r: start/stop recording"
+            if args.snapshot_dir is not None:
+                hint += " | s: snapshot"
+            if recorder.is_recording:
+                cv2.circle(frame, (frame.shape[1] - 28, 28), 9, (0, 0, 255), -1)
+                cv2.putText(
+                    frame,
+                    f"REC {recorder.frames_written}",
+                    (frame.shape[1] - 150, 35),
+                    cv2.FONT_HERSHEY_SIMPLEX,
+                    0.6,
+                    (0, 0, 255),
+                    2,
+                    cv2.LINE_AA,
+                )
             cv2.putText(
                 frame,
-                "Press q or ESC to quit",
+                hint,
                 (20, frame.shape[0] - 50),
                 cv2.FONT_HERSHEY_SIMPLEX,
                 0.6,
@@ -521,12 +652,25 @@ def main():
                 cv2.LINE_AA,
             )
 
+            recorder.write(frame)
+
             cv2.imshow("HFGAD Webcam Gaze Demo", frame)
             key = cv2.waitKey(1) & 0xFF
             if key == ord("q") or key == 27:
                 break
+            if key == ord("r") and args.record_output is not None:
+                if recorder.active:
+                    recorder.stop()
+                else:
+                    recorder.start()
+            if key == ord("s") and args.snapshot_dir is not None:
+                args.snapshot_dir.mkdir(parents=True, exist_ok=True)
+                snapshot_path = args.snapshot_dir / f"demo_frame_{frame_index:06d}.png"
+                cv2.imwrite(snapshot_path.as_posix(), frame)
+                print(f"Snapshot saved: {snapshot_path}")
             frame_index += 1
     finally:
+        recorder.release()
         cap.release()
         cv2.destroyAllWindows()
 

@@ -9,7 +9,9 @@
 Official PyTorch implementation of **HFGAD**, a lightweight hierarchical fine-grained
 attention decoder for appearance-based gaze estimation.
 
-<!-- Demo GIF — uncomment once assets/demo.gif is committed
+<!-- Demo GIF — uncomment once assets/demo.gif is committed.
+     Produce it with §5.1:  python webcam_gaze_demo.py --record-output assets/demo.mp4
+                            python scripts/video_to_gif.py assets/demo.mp4 -o assets/demo.gif
 <p align="center">
   <img src="assets/demo.gif" width="720" alt="HFGAD real-time webcam gaze estimation demo">
 </p>
@@ -180,6 +182,40 @@ python webcam_gaze_demo.py --model path/to/your.onnx
 
 Press `q` (or `Esc`) to quit.
 
+### 5.1 Record your own demo video / GIF
+
+You do not need a screen recorder — the demo can write the annotated frames itself.
+
+```bash
+# 1) Record. Recording starts immediately; press r to pause/resume, q to finish.
+python webcam_gaze_demo.py --record-output assets/demo.mp4 --record-fps 20 \
+                           --snapshot-dir assets
+
+# 2) Convert to a small looping GIF for the README.
+python scripts/video_to_gif.py assets/demo.mp4 -o assets/demo.gif \
+                               --fps 12 --width 720
+```
+
+Details:
+
+| Flag | Meaning |
+|---|---|
+| `--record-output PATH` | Write the annotated frames (face box, gaze arrow, pitch/yaw) to this file. |
+| `--record-fps` | Constant output rate (default 20). The live loop jitters; a fixed rate keeps playback smooth. |
+| `--record-codec` | `mp4v` by default (works everywhere). Try `avc1` for smaller files if your OpenCV build supports it. |
+| `--snapshot-dir DIR` | Press `s` during the demo to save the current frame as a PNG — handy for a static README figure. |
+| key `r` | Start/stop recording. Each resumed take is written to `demo_1.mp4`, `demo_2.mp4`, … so earlier takes are never overwritten. |
+
+`scripts/video_to_gif.py` uses FFmpeg's two-pass palette pipeline for quality; if FFmpeg is
+missing it falls back to imageio (lower quality, larger files). Install a bundled FFmpeg with:
+
+```bash
+pip install imageio-ffmpeg
+```
+
+Keep the GIF under ~8 MB — trim it with `--start 2 --duration 8`, or shrink it with
+`--fps 10 --width 560 --colors 64`. The MP4 source is git-ignored, only commit the GIF.
+
 ---
 
 ## 6. Datasets
@@ -282,7 +318,9 @@ HFGAD-Gaze-Estimation/
 ├─ tester/                  total.py (full run) / leave.py
 ├─ tools/                   ONNX export / quantize / benchmark / CPU smoke test
 ├─ scripts/
-│  └─ download_weights.py   Fetch weights from GitHub Releases
+│  ├─ download_weights.py   Fetch weights from GitHub Releases
+│  └─ video_to_gif.py       Turn a recorded demo MP4 into a README-ready GIF
+├─ assets/                  Demo GIF / figures
 ├─ ctools.py                Generic training utilities
 ├─ gtools.py                Gaze math & visualization (angle conversion, arrows)
 ├─ train_test.py            Train + test in one script
